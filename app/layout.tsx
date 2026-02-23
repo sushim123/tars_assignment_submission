@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
+  const isLandingPage = pathname === "/";
   const isChatting = pathname.split("/").filter(Boolean).length > 1;
 
   return (
@@ -24,14 +24,27 @@ export default function RootLayout({
         className={`${inter.className} bg-[#050505] text-white antialiased`}
       >
         <Providers>
-          <UserSync />
-          <div className="flex h-screen w-full overflow-hidden">
-            <div
-              className={`${isChatting ? "hidden" : "flex"} md:flex h-full w-full md:w-auto`}
-            >
-              <Sidebar />
-            </div>
-
+          {!isLandingPage ? (
+            <>
+              <UserSync />
+              <div className="flex h-screen w-full overflow-hidden">
+                <div
+                  className={`${isChatting ? "hidden" : "flex"} md:flex h-full w-full md:w-auto`}
+                >
+                  <Sidebar />
+                </div>{" "}
+                <main
+                  className={`
+              flex-1 flex flex-col min-w-0 bg-black relative
+              ${isChatting ? "flex" : "hidden"} 
+              md:flex
+            `}
+                >
+                  {children}
+                </main>
+              </div>{" "}
+            </>
+          ) : (
             <main
               className={`
               flex-1 flex flex-col min-w-0 bg-black relative
@@ -41,7 +54,7 @@ export default function RootLayout({
             >
               {children}
             </main>
-          </div>
+          )}
         </Providers>
       </body>
     </html>
