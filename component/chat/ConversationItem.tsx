@@ -95,7 +95,7 @@ export default function ConversationItem({
         <div className="flex justify-between items-center mb-0.5">
           <h3
             className={`font-medium truncate transition-colors ${
-              isOnline ? "text-white" : "text-gray-600 group-hover:text-white"
+              isOnline ? "text-white" : "text-gray-400 group-hover:text-white"
             }`}
           >
             {name}

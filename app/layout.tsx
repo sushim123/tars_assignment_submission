@@ -47,9 +47,7 @@ export default function RootLayout({
           ) : (
             <main
               className={`
-              flex-1 flex flex-col min-w-0 bg-black relative
-              ${isChatting ? "flex" : "hidden"} 
-              md:flex
+            min-h-screen flex-1 flex flex-col min-w-0 bg-black relative md:flex
             `}
             >
               {children}

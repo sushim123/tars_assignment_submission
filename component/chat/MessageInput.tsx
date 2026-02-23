@@ -81,7 +81,7 @@ export default function MessageInput({ conversationId }: MessageInputProps) {
         </div>
       </div>
 
-      <p className="text-[10px] text-zinc-600 mt-2 text-center uppercase tracking-widest font-medium">
+      <p className="hidden md:block text-[10px] text-zinc-600 mt-2 text-center uppercase tracking-widest font-medium">
         Press Enter to send · Shift + Enter for new line
       </p>
     </div>
