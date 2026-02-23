@@ -53,7 +53,7 @@ interface MessageListProps {
   otherUserId: Id<"users">;
 }
 
-const EMOJI_OPTIONS = ["😲"];
+const EMOJI_OPTIONS = ["👍🏻","♥️","😯","😂","🤩"]
 
 export default function MessageList({
   messages,
@@ -163,7 +163,7 @@ export default function MessageList({
                       } ${isDeleted ? "opacity-40 border-dashed" : ""}`}
                     >
                       <p className={`leading-relaxed whitespace-pre-wrap wrap-break-words overflow-hidden ${isDeleted ? "italic text-zinc-400" : ""}`}>
-                        {isDeleted ? "This message was deleted" : msg.content}
+                        {isDeleted ? "This message was deleted " : msg.content}
                       </p>
                       <div
                         className={`text-[10px] mt-1 opacity-40 tabular-nums ${

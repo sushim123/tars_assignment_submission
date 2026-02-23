@@ -24,7 +24,7 @@ export default function Sidebar() {
       </aside>
     );
   }
-
+  const displayUsers = searchQuery ? searchResults : users;
   return (
     <aside className="w-full md:w-80 lg:w-96 shrink-0 border-r border-white/5 flex flex-col h-full bg-[#0a0a0a] relative z-10">
       <div className="bg-white/2 backdrop-blur-md">
@@ -33,43 +33,33 @@ export default function Sidebar() {
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
-        
-        {searchQuery ? (
-          searchResults?.length === 0 ? (
-            <p className="p-8 text-center text-zinc-500 text-sm italic">
-              No users found...
-            </p>
-          ) : (
-            searchResults?.map((user) => (
-              <ConversationItem
+        {displayUsers && displayUsers.length > 0 ? (
+          displayUsers.map((user, index) => {
+            const existingConv = conversation.find(
+              (c) => c.otherUser?._id === user._id,
+            );
+
+            return (
+              <div
                 key={user._id}
-                name={user.name || "Anonymous"}
-                avatar={user.image}
-                id={user._id}
-              />
-            ))
-          )
-        ) : /* IF NOT SEARCHING: Show Active Conversations with Unread Badges */
-        conversation.length === 0 ? (
-          <p className="p-8 text-center text-zinc-500 text-sm italic">
-            The silence is deafening...
-          </p>
+                className="animate-in fade-in slide-in-from-bottom-2 duration-500"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <ConversationItem
+                  name={user.name || "Anonymous"}
+                  avatar={user.image}
+                  id={user._id}
+                  lastSeen={user.lastSeen}
+                  unreadCount={existingConv?.unreadCount || 0}
+                  
+                />
+              </div>
+            );
+          })
         ) : (
-          conversation.map((conv, index) => (
-            <div
-              key={conv._id}
-              className="animate-in fade-in slide-in-from-bottom-2 duration-500"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <ConversationItem
-                name={conv.otherUser?.name || "Anonymous"}
-                avatar={conv.otherUser?.image}
-                lastSeen={conv.otherUser?.lastSeen}
-                id={conv.otherUser?._id} 
-                unreadCount={conv.unreadCount}
-              />
-            </div>
-          ))
+          <p className="p-8 text-center text-zinc-500 text-sm italic">
+            {searchQuery ? "No users found..." : "No users available."}
+          </p>
         )}
       </div>
     </aside>
