@@ -57,7 +57,7 @@ export default function SidebarHeader() {
               <p className="text-gray-950 bg-gray-200/40 mb-2 p-2 rounded-2xl ">Name: {user.fullName}</p>
               <p className="text-gray-950 bg-gray-200/50 mb-2 p-2 rounded-2xl">Email: {user.emailAddresses[0].emailAddress}</p>
               <p className="text-gray-950 bg-gray-200/50 mb-2 p-2 rounded-2xl">Account: {user?.createdAt?.toDateString()}</p>
-              <button className="text-red-600 font-bold bg-red-400/20 mb-2 p-2 rounded-2xl">Logout</button>
+            {/* <button className="text-red-600 font-bold bg-red-400/20 mb-2 p-2 rounded-2xl">Logout</button> */}
             </div>
           )}
         </div>
