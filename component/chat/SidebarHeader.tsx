@@ -2,12 +2,12 @@
 
 import { useUser, useAuth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePresence } from "@/hooks/usePresence";
 export default function SidebarHeader() {
   const { isLoaded, userId } = useAuth();
   const { user } = useUser();
-
+  const [profileClicked, setProfileClicked] = useState(false);
   useEffect(() => {
     if (isLoaded && !userId) {
       redirect("/sign-in");
@@ -31,7 +31,7 @@ export default function SidebarHeader() {
           <div className="text-sm font-medium text-white tracking-tight">
             {user.fullName}
           </div>
-          
+
           <div className="flex items-center justify-end gap-1.5 mt-0.5">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -42,14 +42,24 @@ export default function SidebarHeader() {
             </span>
           </div>
         </div>
-
-        <div className="relative group">
-          <div className="absolute inset-0 bg-indigo-500/20 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-          <img
-            src={user.imageUrl}
-            alt={user.fullName ?? "User"}
-            className="w-9 h-9 rounded-full border border-white/20 object-cover relative z-10"
-          />
+        <div className="relative">
+          <div className="relative group">
+            <div className="absolue inset-0 gap-5 bg-indigo-500/20 blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+            <img
+              onClick={() => setProfileClicked((prev) => !prev)}
+              src={user.imageUrl}
+              alt={user.fullName ?? "User"}
+              className="w-9 h-9 rounded-full border border-white/20 object-cover relative z-10"
+            />
+          </div>
+          {profileClicked && (
+            <div className="justify-center flex flex-col p-2  absolute right-0 mt-2 h-56   w-60 rounded-2xl bg-gray-600/30 border">
+              <p className="text-gray-950 bg-gray-200/40 mb-2 p-2 rounded-2xl ">Name: {user.fullName}</p>
+              <p className="text-gray-950 bg-gray-200/50 mb-2 p-2 rounded-2xl">Email: {user.emailAddresses[0].emailAddress}</p>
+              <p className="text-gray-950 bg-gray-200/50 mb-2 p-2 rounded-2xl">Account: {user?.createdAt?.toDateString()}</p>
+              <button className="text-red-600 font-bold bg-red-400/20 mb-2 p-2 rounded-2xl">Logout</button>
+            </div>
+          )}
         </div>
       </div>
     </div>
