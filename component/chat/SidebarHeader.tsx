@@ -1,12 +1,14 @@
 "use client";
 
-import { useUser, useAuth } from "@clerk/nextjs";
+import { useUser, useAuth  } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePresence } from "@/hooks/usePresence";
+import {  motion } from "framer-motion"
 export default function SidebarHeader() {
-  const { isLoaded, userId } = useAuth();
-  const { user } = useUser();
+  const { isLoaded, userId , signOut } = useAuth();
+  const { user  } = useUser();
+ 
   const [profileClicked, setProfileClicked] = useState(false);
   useEffect(() => {
     if (isLoaded && !userId) {
@@ -17,6 +19,10 @@ export default function SidebarHeader() {
   if (!isLoaded || !user) {
     return <div className="h-16 border-b border-white/10 animate-pulse" />;
   }
+  // const logout = async () => {
+  //   await signOut();
+  //   redirect("/");
+  // }
 
   return (
     <div className="h-16 flex items-center justify-between px-5 border-b border-white/10 bg-white/2 backdrop-blur-md shrink-0">
@@ -53,12 +59,15 @@ export default function SidebarHeader() {
             />
           </div>
           {profileClicked && (
-            <div className="justify-center flex flex-col p-2  absolute right-0 mt-2 h-56   w-60 rounded-2xl bg-gray-600/30 border">
-              <p className="text-gray-950 bg-gray-200/40 mb-2 p-2 rounded-2xl ">Name: {user.fullName}</p>
-              <p className="text-gray-950 bg-gray-200/50 mb-2 p-2 rounded-2xl">Email: {user.emailAddresses[0].emailAddress}</p>
-              <p className="text-gray-950 bg-gray-200/50 mb-2 p-2 rounded-2xl">Account: {user?.createdAt?.toDateString()}</p>
-            {/* <button className="text-red-600 font-bold bg-red-400/20 mb-2 p-2 rounded-2xl">Logout</button> */}
-            </div>
+            <motion.div  initial={{ opacity: 0, y: -20 }} animate={{
+              opacity: 1, y: 0
+
+            }} transition={{ duration: 0.3 }} className="justify-end flex flex-col p-2  absolute right-0 mt-2 h-48 w-60 rounded-2xl bg-gray-600/30 border">
+              <p className="text-gray-950 text-sm bg-gray-200/40 mb-2 p-2 rounded-2xl ">Name: {user.fullName}</p>
+              <p className="text-gray-950 text-sm bg-gray-200/50 mb-2 p-2 rounded-2xl">Email: {user.emailAddresses[0].emailAddress}</p>
+              <p className="text-gray-950 text-sm bg-gray-200/50 mb-2 p-2 rounded-2xl">Account: {user?.createdAt?.toDateString()}</p>
+              {/* <button onClick={logout} className="text-red-600 font-bold bg-red-400/20 mb-2 p-2 rounded-2xl">Logout</button> */}
+            </motion.div>
           )}
         </div>
       </div>

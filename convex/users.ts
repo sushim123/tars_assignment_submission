@@ -15,7 +15,7 @@ export const getUsers = query({
         _id: u._id,
         name: u.name,
         image: u.image,
-        lastSeen: u.lastSeen, 
+        lastSeen: u.lastSeen,
       }));
   },
 });
@@ -25,14 +25,14 @@ export const updatePresence = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return;
 
- 
+
     const user = await ctx.db
       .query("users")
       .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
       .unique();
 
     if (user) {
-     
+
       await ctx.db.patch(user._id, { lastSeen: Date.now() });
     }
   },
@@ -60,7 +60,7 @@ export const createUser = mutation({
       name: args.name,
       email: args.email,
       image: args.image,
-      
+
     });
   },
 });
@@ -93,7 +93,7 @@ export const searchUsers = query({
       .withSearchIndex("search_name", (q) => q.search("name", args.searchTerm))
       .collect();
 
-   
+
     return users.filter((u) => u.clerkId !== identity.subject);
   },
 });
@@ -120,5 +120,21 @@ export const getTypingStatus = query({
     const user = await ctx.db.get(args.otherUserId);
     if (!user || !user.typingUntil) return false;
     return Date.now() < user.typingUntil;
+  },
+});
+
+export const Logout = mutation({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return;
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (user) {
+      await ctx.db.patch(user._id, { typingUntil: Date.now() + 3000 });
+    }
   },
 });
